@@ -5,6 +5,7 @@ GGR472 LAB 4: Incorporating GIS Analysis into web maps using Turf.js
 /*--------------------------------------------------------------------
 Step 1: INITIALIZE MAP
 --------------------------------------------------------------------*/
+
 // Define access token
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2V2aW55dWFuenkiLCJhIjoiY201eHprYXU0MGZwejJsb242Y3Nza25oYyJ9.h05hqdnqlx2BwgwbQNuKCg'; //****ADD YOUR PUBLIC ACCESS TOKEN*****
 
@@ -16,6 +17,8 @@ const map = new mapboxgl.Map({
     zoom: 11 // starting zoom level
 });
 
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
 
 /*--------------------------------------------------------------------
 Step 2: VIEW GEOJSON POINT DATA ON MAP
@@ -23,6 +26,12 @@ Step 2: VIEW GEOJSON POINT DATA ON MAP
 //HINT: Create an empty variable
 //      Use the fetch method to access the GeoJSON from your online repository
 //      Convert the response to JSON format and then store the response in your new variable
+
+// Create empty GeoJSON object to hold point features
+let geojson = {
+    'type': 'FeatureCollection',
+    'features': []
+};
 
 
 
