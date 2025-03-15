@@ -27,16 +27,17 @@ Step 2: VIEW GEOJSON POINT DATA ON MAP
 //      Use the fetch method to access the GeoJSON from your online repository
 //      Convert the response to JSON format and then store the response in your new variable
 
-// Create empty GeoJSON object to hold point features
-let geojson = {
-    'type': 'FeatureCollection',
-    'features': []
-};
+// Create empty variable to hold point features
+let collisiongeojson;
 
 // Use fetch function to access geojson file from the online repository
 fetch("https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main/data/pedcyc_collision_06-21.geojson")
-
-
+// Convert the response to JSON format and then store the response in the variable
+    .then(response => response.json())
+    .then(response => {
+        console.log(response); //Check response in console
+        collisiongeojson = response; // Store geojson as variable using URL from fetch response
+});
 
 /*--------------------------------------------------------------------
     Step 3: CREATE BOUNDING BOX AND HEXGRID
