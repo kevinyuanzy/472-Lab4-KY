@@ -33,6 +33,9 @@ let geojson = {
     'features': []
 };
 
+// Use fetch function to access geojson file from the online repository
+fetch("https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main/data/pedcyc_collision_06-21.geojson")
+
 
 
 /*--------------------------------------------------------------------
