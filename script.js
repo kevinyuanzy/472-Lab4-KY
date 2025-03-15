@@ -13,8 +13,8 @@ mapboxgl.accessToken = 'pk.eyJ1Ijoia2V2aW55dWFuenkiLCJhIjoiY201eHprYXU0MGZwejJsb
 const map = new mapboxgl.Map({
     container: 'map', // container id in HTML
     style: 'mapbox://styles/kevinyuanzy/cm6ztbpqc003s01qwcvdrf6ft',  // ****ADD MAP STYLE HERE *****
-    center: [-79.39, 43.65],  // starting point, longitude/latitude
-    zoom: 11 // starting zoom level
+    center: [-79.390520, 43.710258],  // starting point, longitude/latitude
+    zoom: 10.5 // starting zoom level
 });
 
 // Add zoom and rotation controls to the map.
@@ -39,6 +39,7 @@ fetch("https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main
         collisiongeojson = response; // Store geojson as variable using URL from fetch response
 });
 
+
 /*--------------------------------------------------------------------
     Step 3: CREATE BOUNDING BOX AND HEXGRID
 --------------------------------------------------------------------*/
@@ -49,6 +50,13 @@ fetch("https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main
 //      **Option: You may want to consider how to increase the size of your bbox to enable greater geog coverage of your hexgrid
 //                Consider return types from different turf functions and required argument types carefully here
 
+// Add map event handler
+map.on('load', () => {
+
+    
+
+
+})
 
 
 /*--------------------------------------------------------------------
