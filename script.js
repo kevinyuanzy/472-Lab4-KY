@@ -92,21 +92,6 @@ map.on('load', () => {
     let hexdata = turf.hexGrid(bboxcoords, 0.5, {units: "kilometers"});
     console.log(hexdata)
 
-    map.addSource('hexagons', {
-        type: 'featurecollection',
-        data: hexdata
-    });
-
-    map.addLayer({
-        'id': 'collision-polygons',
-        'type': 'fill',
-        'source': 'hexagons',
-        'paint': {
-            'fill-color': '#00b33c', 
-            'fill-opacity': 0.5,
-            'fill-outline-color': 'black'
-        }
-    });
 
     /*--------------------------------------------------------------------
     Step 4: AGGREGATE COLLISIONS BY HEXGRID
@@ -118,6 +103,43 @@ map.on('load', () => {
     let collishex = turf.collect(hexdata, collisiongeojson, "id_", "values")
 
     console.log(collishex)
+
+    // Create new variable to store max number of collision
+    let maxcollisions = 0;
+
+    // Count the cases in each hexagon
+    collishex.features.forEach((feature) => {
+        feature.properties.COUNT = feature.properties.values.length;
+        if (feature.properties.COUNT > maxcollisions) {
+            maxcollisions = feature.properties.COUNT;
+        }
+    });
+
+    map.addSource('CollisionGrid', {
+        type: 'geojson',
+        data: collishex // The URL to my GeoJson polygon.
+    });
+    
+    // Add layer style to the map to represent park polygons.
+    map.addLayer({
+        'id': 'CollisionFill',
+        'type': 'fill',
+        'source': 'CollisionGrid',
+        'paint': {
+            'fill-color': [
+                'step', // STEP expression produces stepped results based on value pairs
+                ['get', 'COUNT'], // GET expression retrieves property value from 'population' data field
+                '#ffffff', // Colour assigned to any values < first step
+                10, '#fc4e2a', // Colours assigned to values >= each step
+                20, '#e31a1c',
+                30, '#bd0026',
+                maxcollisions, '#000000'
+            ],
+            'fill-opacity': 0.5,
+            'fill-outline-color': 'black',
+        },
+        filter: ["!=", "COUNT", 0],
+    });
 
 })
 
