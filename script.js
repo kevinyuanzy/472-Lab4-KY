@@ -32,13 +32,13 @@ let collisiongeojson;
 
 // Use fetch function to access geojson file from the online repository
 fetch("https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main/data/pedcyc_collision_06-21.geojson")
+
 // Convert the response to JSON format and then store the response in the variable
     .then(response => response.json())
     .then(response => {
         console.log(response); //Check response in console
         collisiongeojson = response; // Store geojson as variable using URL from fetch response
 });
-
 
 /*--------------------------------------------------------------------
     Step 3: CREATE BOUNDING BOX AND HEXGRID
@@ -53,8 +53,23 @@ fetch("https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main
 // Add map event handler
 map.on('load', () => {
 
-    
+    // Create a bounding box around the collision point data
 
+    let envresult = turf.envelope(collisiongeojson)
+    
+    let bboxscaled = turf.transformScale(envresult, 1.1)
+    console.log(bboxscaled)
+
+    // Access and store the bounding box coordinates
+    // Stored as [minX, minY, maxX, maxY]
+    let bboxcoords = [
+        bboxscaled.geometry.coordinates[0][0][0],
+        bboxscaled.geometry.coordinates[0][0][1],
+        bboxscaled.geometry.coordinates[0][2][0],
+        bboxscaled.geometry.coordinates[0][0][1],
+    ]
+
+    
 
 })
 
