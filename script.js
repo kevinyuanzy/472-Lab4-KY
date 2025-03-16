@@ -130,12 +130,14 @@ map.on('load', () => {
                 'step', // STEP expression produces stepped results based on value pairs
                 ['get', 'COUNT'], // GET expression retrieves property value from 'population' data field
                 '#ffffff', // Colour assigned to any values < first step
-                10, '#fc4e2a', // Colours assigned to values >= each step
-                20, '#e31a1c',
-                30, '#bd0026',
+                5, '#c5d3e6', // Colours assigned to values >= each step
+                10, '#71a1e3',
+                15, '#116bed',
+                20, '#0b4aa3',
+                25, '#062147',
                 maxcollisions, '#000000'
             ],
-            'fill-opacity': 0.5,
+            'fill-opacity': 0.75,
             'fill-outline-color': 'black',
         },
         filter: ["!=", "COUNT", 0],
