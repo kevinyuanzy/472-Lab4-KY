@@ -179,7 +179,7 @@ map.on('load', () => {
     map.on('click', 'CollisionFill', (e) => {
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
-            .setHTML("Collision Count:" + e.features[0].properties.COUNT)          
+            .setHTML("Collision Count: " + e.features[0].properties.COUNT)          
             .addTo(map);
     });
 
