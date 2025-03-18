@@ -40,7 +40,7 @@ Step 2: VIEW GEOJSON POINT DATA ON MAP
 // Create empty variable to hold point features
 let collisiongeojson;
 
-// Use fetch function to access geojson file from the online repository
+// Use fetch function to access geojson file of collision cases from the online repository
 // Convert the response to JSON format and then store the response in the variable
 fetch("https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main/data/pedcyc_collision_06-21.geojson")
     .then(response => response.json())
