@@ -17,6 +17,16 @@ const map = new mapboxgl.Map({
     zoom: 10.5 // starting zoom level
 });
 
+//Add search control to map overlay
+//Requires plugin as source in HTML body
+map.addControl(
+    new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        countries: "ca"
+    })
+);
+
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
 
@@ -53,20 +63,7 @@ fetch("https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main
 // Add map event handler
 map.on('load', () => {
 
-    map.addSource('CollisionPts', {
-        type: 'geojson',
-        data: 'https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main/data/pedcyc_collision_06-21.geojson' // The URL to my GeoJson polygon.
-    });
-
-    map.addLayer({
-        'id': 'collision-points', 
-        'type': 'circle', 
-        'source': 'CollisionPts',
-        'paint': {
-            'circle-color': '#ff1a1a',
-            'circle-radius': 3 
-        },
-    });
+    
 
     // Create a bounding box around the collision point data
 
@@ -130,19 +127,113 @@ map.on('load', () => {
                 'step', // STEP expression produces stepped results based on value pairs
                 ['get', 'COUNT'], // GET expression retrieves property value from 'population' data field
                 '#ffffff', // Colour assigned to any values < first step
-                5, '#c5d3e6', // Colours assigned to values >= each step
-                10, '#71a1e3',
-                15, '#116bed',
-                20, '#0b4aa3',
-                25, '#062147',
+                1, '#F0F9E8', // Colours assigned to values >= each step
+                6, '#CCEBC5',
+                11, '#A8DDB5',
+                16, '#7BCCC4',
+                21, '#43A2CA',
+                31, '#0868AC',
                 maxcollisions, '#000000'
             ],
-            'fill-opacity': 0.75,
+            'fill-opacity': 0.8,
             'fill-outline-color': 'black',
         },
         filter: ["!=", "COUNT", 0],
     });
 
+    map.addSource('CollisionPts', {
+        type: 'geojson',
+        data: 'https://raw.githubusercontent.com/kevinyuanzy/472-Lab4-KY/refs/heads/main/data/pedcyc_collision_06-21.geojson' // The URL to my GeoJson polygon.
+    });
+
+    map.addLayer({
+        'id': 'collision-points', 
+        'type': 'circle', 
+        'source': 'CollisionPts',
+        'paint': {
+            'circle-color': '#4F9E2B',
+            'circle-radius': 2
+        },
+    });
+
+    // /*--------------------------------------------------------------------
+    // Step 5: FINALIZE YOUR WEB MAP
+    // --------------------------------------------------------------------*/
+    //HINT: Think about the display of your data and usability of your web map.
+    //      Update the addlayer paint properties for your hexgrid using:
+    //        - an expression
+    //        - The COUNT attribute
+    //        - The maximum number of collisions found in a hexagon
+    //      Add a legend and additional functionality including pop-up windows
+
+    //Change map layer display based on check box using setLayoutProperty method
+    document.getElementById('layercheck').addEventListener('change', (e) => {
+        map.setLayoutProperty(
+            'collision-points',
+            'visibility',
+        e.target.checked ? 'visible' : 'none'
+        );
+    });
+
+    //Create a popup, so the number of collision cases will appear when mouse clicks on features.
+    map.on('click', 'CollisionFill', (e) => {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML("Collision Count:" + e.features[0].properties.COUNT)          
+            .addTo(map);
+    });
+
+    map.on('mouseenter', 'line2-completed-stations', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    
+    map.on('mouseleave', 'line2-completed-stations', () => {
+        map.getCanvas().style.cursor = '';
+    });
+
+    //Declare array variables for labels and colours
+    const legendlabels = [
+    '1-5',
+    '6-10',
+    '11-15',
+    '16-20',
+    '21-30',
+    'Above 30',
+    'Maximum collision'
+    ];
+
+    const legendcolours = [
+    '#F0F9E8', 
+    '#CCEBC5',
+    '#A8DDB5',
+    '#7BCCC4',
+    '#43A2CA',
+    '#0868AC',
+    '#000000'
+    ];
+
+    //Declare legend variable using legend div tag
+    const legend = document.getElementById('legend');
+
+    //For each layer create a block to put the colour and label in
+    legendlabels.forEach((label, i) => {
+    const colour = legendcolours[i];
+
+    const item = document.createElement('div'); //each layer gets a 'row' - this isn't in the legend yet, we do this later
+    const key = document.createElement('span'); //add a 'key' to the row. A key will be the colour circle
+
+    key.className = 'legend-key'; //the key will take on the shape and style properties defined in css
+    key.style.backgroundColor = colour; // the background color is retreived from teh layers array
+
+    const value = document.createElement('span'); //add a value variable to the 'row' in the legend
+    value.innerHTML = `${label}`; //give the value variable text based on the label
+
+    item.appendChild(key); //add the key (colour cirlce) to the legend row
+    item.appendChild(value); //add the value to the legend row
+
+    legend.appendChild(item); //add row to the legend
+    });
 })
 
 
@@ -150,14 +241,6 @@ map.on('load', () => {
 
 
 
-// /*--------------------------------------------------------------------
-// Step 5: FINALIZE YOUR WEB MAP
-// --------------------------------------------------------------------*/
-//HINT: Think about the display of your data and usability of your web map.
-//      Update the addlayer paint properties for your hexgrid using:
-//        - an expression
-//        - The COUNT attribute
-//        - The maximum number of collisions found in a hexagon
-//      Add a legend and additional functionality including pop-up windows
+
 
 
