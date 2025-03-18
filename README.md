@@ -1,5 +1,5 @@
 # GGR472 Lab 4 by Kevin Yuan
-This repository contains the Lab 3 website, documents used to create the website, and data it used.
+This repository contains the Lab 4 website, documents used to create the website, and data it used.
 
 ## Repository Contents
 The website is an interactive map showing the car collision data in Toronto, including points that indicating the locations of each collision case, and a hexgrid that includes a count of collision cases in each hexagon that made up the hexgrid. 
